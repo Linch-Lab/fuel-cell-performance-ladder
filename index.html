@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>Fuel Cell Performance Ladder</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>body{{font-family: sans-serif; margin: 2rem;}}
+table{{border-collapse: collapse; margin-top: 1rem;}}
+th,td{{border: 1px solid #ccc; padding: 4px 10px; font-size: 12px;}}</style>
+</head>
+<body>
+<h1>Fuel Cell Performance Ladder</h1>
+<p>各類型燃料電池最佳性能紀錄（2016–2026）。資料經三源驗證（MinerU 解析 + 讀圖取點 + DOI 核對）。</p>
+<div id="chart"></div>
+<h2>操作條件參考資料</h2>
+<div id="refs"></div>
+<script>
+const DATA = {"peak_power": {}, "current_density": {}};
+const colors = {"PEMFC": "#e6194b", "HT-PEMFC": "#3cb44b", "O-SOFC": "#4363d8", "P-SOFC": "#f58231", "AEMFC": "#911eb4", "COMMERCIAL": "#808080"};
+const techs = Object.keys(colors);
+const METRICS = ['peak_power', 'current_density'];
+const TITLES = ['Peak Power Density (W/cm²)', 'Current Density @0.65V (A/cm²)'];
+const trAll = [];
+for (let mi = 0; mi < METRICS.length; mi++) {{
+    const metric = METRICS[mi];
+    for (const tech of techs) {{
+        const pts = (DATA[metric] || {{}})[tech] || [];
+        trAll.push({{
+            x: pts.map(p => p.year),
+            y: pts.map(p => p.value),
+            mode: 'lines+markers',
+            name: tech + (mi === 1 ? ' (I@0.65V)' : ''),
+            line: {{color: colors[tech] || '#000', width: 2}},
+            marker: {{size: 7, color: colors[tech] || '#000'}},
+            xaxis: 'x' + (mi + 1),
+            yaxis: 'y' + (mi + 1),
+        }});
+    }}
+}}
+const layout = {{
+    grid: {{rows: 2, columns: 1, pattern: 'independent'}},
+    title: 'Fuel Cell Performance Ladder (2016–2026)',
+    showlegend: true,
+    height: 900,
+    xaxis: {{title: 'Year', range: [2015.5, 2026.5], dtick: 2}},
+    xaxis2: {{title: 'Year', range: [2015.5, 2026.5], dtick: 2}},
+    yaxis: {{title: TITLES[0]}},
+    yaxis2: {{title: TITLES[1]}},
+}};
+Plotly.newPlot('chart', trAll, layout);
+</script>
+</body>
+</html>
