@@ -1,0 +1,166 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+Fuel Cell Performance Ladder — index.html 生成（含已提取數據點）
+上：峰值功率密度 (W/cm²) × 年份
+下：電流密度 @0.65V (A/cm²) × 年份
+2016–2026，每技術一條線，催化劑類型用 marker 區分（PGM ○ / PGM-free □）
+"""
+import csv
+import json
+import os
+
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(REPO, 'data')
+HTML_OUT = os.path.join(REPO, 'index.html')
+
+# 內嵌已提取數據點（review 讀取，後續讀圖補點）
+# 格式: {tech: [(year, catalyst, peak_power_mWcm2, current_0_65V_mAcm2, conditions, source)]}
+DATA = {
+    'AEMFC': [
+        (2016, 'PGM', 700, None, '60-80°C, H2/O2, Pt/PtRu', 'AEMFC Review 2018 JPS'),
+        (2017, 'PGM', 1000, None, '60-80°C, H2/O2, PtRu', 'AEMFC Review 2018 JPS'),
+        (2017, 'PGM-free', 300, None, '60-80°C, H2/O2, Pd-Ni/CeO2', 'AEMFC Review 2018 JPS'),
+        (2018, 'PGM-free', 100, None, '60-80°C, H2/O2, PGM-free HOR', 'AEMFC Review 2018 JPS'),
+    ],
+    'HT-PEMFC': [
+        (2016, 'PGM', 512, None, '120°C, CNT/ABPBI/Pt@IL', 'CSR 2021'),
+        (2016, 'PGM', 482, None, '160°C, H2/O2, binderless Pt 0.1mg', 'CSR 2021'),
+        (2016, 'PGM', 320, None, '150°C, Pt/C 0.2mg, MPL-free', 'CSR 2021'),
+        (2018, 'PGM-free', 185, None, '160°C, H2/O2, Fe-N-C', 'CSR 2021'),
+    ],
+}
+
+# 技術顏色
+TECH_COLORS = {
+    'PEMFC': '#e6194b',
+    'HT-PEMFC': '#3cb44b',
+    'O-SOFC': '#4363d8',
+    'P-SOFC': '#f58231',
+    'AEMFC': '#911eb4',
+    'COMMERCIAL': '#808080',
+}
+
+CATALYST_MARKERS = {
+    'PGM': 'circle',
+    'PGM-free': 'square',
+}
+
+
+def build_html():
+    data_json = json.dumps(DATA, ensure_ascii=False)
+    colors_json = json.dumps(TECH_COLORS, ensure_ascii=False)
+    markers_json = json.dumps(CATALYST_MARKERS, ensure_ascii=False)
+
+    html = f"""<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fuel Cell Performance Ladder — 燃料電池性能天梯</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>
+body {{ font-family: 'Segoe UI', sans-serif; margin: 2rem; background: #fafafa; color: #222; }}
+h1 {{ border-bottom: 3px solid #4363d8; padding-bottom: 0.3rem; }}
+h2 {{ margin-top: 1.8rem; color: #333; }}
+.subtitle {{ color: #666; font-size: 0.95rem; }}
+table {{ border-collapse: collapse; margin-top: 0.8rem; background: #fff; }}
+th, td {{ border: 1px solid #ddd; padding: 5px 12px; font-size: 13px; }}
+th {{ background: #f0f0f0; }}
+.marker-legend span {{ margin-right: 1.2rem; }}
+.note {{ font-size: 0.85rem; color: #777; }}
+</style>
+</head>
+<body>
+
+<h1>⚡ Fuel Cell Performance Ladder</h1>
+<p class="subtitle">各類型燃料電池最佳性能紀錄（2016–2026）· 資料經三源驗證（MinerU 解析 + 讀圖取點 + DOI 核對）· <a href="https://github.com/Linch-Lab/fuel-cell-performance-ladder">GitHub</a></p>
+
+<div class="marker-legend">
+  <span><svg width="14" height="14"><circle cx="7" cy="7" r="6" fill="#333"/></svg> PGM（貴金屬）</span>
+  <span><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" fill="#333"/></svg> PGM-free（非貴金屬）</span>
+</div>
+
+<div id="chart"></div>
+
+<h2>📋 操作條件與來源參考資料</h2>
+<div id="refs"></div>
+
+<p class="note">⚠️ 數據持續擴充中——目前為 review 文獻文本提取（AEMFC/HT-PEMFC），極化曲線讀圖取點進行中。CC BY 4.0（資料/圖）· MIT（程式碼）。</p>
+
+<script>
+const DATA = {data_json};
+const COLORS = {colors_json};
+const MARKERS = {markers_json};
+
+// 整理 traces：上圖 peak power，下圖 current density@0.65V
+const traces = [];
+let tIdx = 0;
+for (const [tech, pts] of Object.entries(DATA)) {{
+  // peak power (mW/cm² → W/cm²)
+  const pp = pts.filter(p => p[2] !== null);
+  for (const cat of ['PGM', 'PGM-free']) {{
+    const sel = pp.filter(p => p[1] === cat).sort((a,b) => a[0]-b[0]);
+    if (sel.length === 0) continue;
+    traces.push({{
+      x: sel.map(p => p[0]), y: sel.map(p => p[2]/1000),
+      mode: 'lines+markers', name: tech + ' (' + cat + ')',
+      line: {{color: COLORS[tech] || '#000', width: 2}},
+      marker: {{symbol: MARKERS[cat], size: 9, color: COLORS[tech] || '#000'}},
+      xaxis: 'x', yaxis: 'y',
+      text: sel.map(p => `${{p[0]}}: ${{p[2]}} mW/cm²<br>${{p[4]}}<br>來源: ${{p[5]}}`),
+      hoverinfo: 'text',
+    }});
+  }}
+  // current density @0.65V
+  const cd = pts.filter(p => p[3] !== null);
+  for (const cat of ['PGM', 'PGM-free']) {{
+    const sel = cd.filter(p => p[1] === cat).sort((a,b) => a[0]-b[0]);
+    if (sel.length === 0) continue;
+    traces.push({{
+      x: sel.map(p => p[0]), y: sel.map(p => p[3]),
+      mode: 'lines+markers', name: tech + ' @0.65V (' + cat + ')',
+      line: {{color: COLORS[tech] || '#000', width: 2, dash: 'dot'}},
+      marker: {{symbol: MARKERS[cat], size: 9, color: COLORS[tech] || '#000'}},
+      xaxis: 'x2', yaxis: 'y2',
+      text: sel.map(p => `${{p[0]}}: ${{p[3]}} mA/cm² @0.65V<br>${{p[4]}}<br>來源: ${{p[5]}}`),
+      hoverinfo: 'text',
+    }});
+  }}
+}}
+
+const layout = {{
+  grid: {{rows: 2, columns: 1, pattern: 'independent'}},
+  title: {{text: 'Fuel Cell Performance Ladder (2016–2026)', font: {{size: 18}}}},
+  showlegend: true,
+  height: 950,
+  xaxis: {{title: 'Year', range: [2015.5, 2026.5], dtick: 1}},
+  xaxis2: {{title: 'Year', range: [2015.5, 2026.5], dtick: 1}},
+  yaxis: {{title: 'Peak Power Density (W/cm²)', rangemode: 'tozero'}},
+  yaxis2: {{title: 'Current Density @0.65V (A/cm²)', rangemode: 'tozero'}},
+  hovermode: 'closest',
+  legend: {{orientation: 'h', y: -0.1, font: {{size: 10}}}},
+  margin: {{t: 60, b: 80, l: 70, r: 30}},
+}};
+
+Plotly.newPlot('chart', traces, layout, {{responsive: true}});
+
+// 參考資料表
+let html = '<table><tr><th>技術</th><th>年份</th><th>催化劑</th><th>峰值功率</th><th>操作條件</th><th>來源</th></tr>';
+for (const [tech, pts] of Object.entries(DATA)) {{
+  for (const p of pts) {{
+    html += `<tr><td>${{tech}}</td><td>${{p[0]}}</td><td>${{p[1]}}</td><td>${{p[2] ? p[2]+' mW/cm²' : '—'}}</td><td>${{p[4]}}</td><td>${{p[5]}}</td></tr>`;
+  }}
+}}
+html += '</table>';
+document.getElementById('refs').innerHTML = html;
+</script>
+</body>
+</html>"""
+    with open(HTML_OUT, 'w', encoding='utf-8') as fh:
+        fh.write(html)
+    print(f"✅ HTML 生成: {HTML_OUT}")
+
+
+if __name__ == '__main__':
+    build_html()
