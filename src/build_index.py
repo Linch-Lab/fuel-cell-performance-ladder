@@ -4,38 +4,68 @@
 Fuel Cell Performance Ladder — index.html 生成（含已提取數據點）
 上：峰值功率密度 (W/cm²) × 年份
 下：電流密度 @0.65V (A/cm²) × 年份
-2016–2026，每技術一條線，催化劑類型用 marker 區分（PGM ○ / PGM-free □）
+第三圖：商業系統效率% × 年份
+2016–2026，每技術一條線，催化劑類型用 marker 形狀區分（PGM ○ / PGM-free □）
+氣體類型：H2/air = 實心+實線；H2/O2 = 空心+虛線（各自獨立連線）
 """
-import csv
 import json
 import os
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(REPO, 'data')
 HTML_OUT = os.path.join(REPO, 'index.html')
 
-# 內嵌已提取數據點（review 讀取，後續讀圖補點）
-# 格式: {tech: [(year, catalyst, peak_power_mWcm2, current_0_65V_mAcm2, conditions, source)]}
+# 格式: {tech: [(year, catalyst, gas, peak_power_mWcm2, current_0_65V_mAcm2, conditions, source)]}
 DATA = {
     'PEMFC': [
-        (2024, 'PGM', 2031, None, 'ZIF-Pt-Co-Ni, H2/O2', 'Nano Energy 2024 (10.1016/j.nanoen.2023.109154)'),
-        (2016, 'PGM', 2000, None, 'Au@Pt core-shell, H2/O2, 10k cycles', 'Chemelectrochem 2016 (10.1002/celc.201600046)'),
-        (2017, 'PGM', 1365, None, 'Pt-Pd nanodendrites', 'IJHE 2017 (10.1016/j.ijhydene.2017.08.162)'),
-        (2019, 'PGM', 1300, None, 'Pt-Pd/C coupled (HT-PEMFC)', 'IJHE 2019 (10.1016/j.ijhydene.2018.07.192)'),
-        (2022, 'PGM', 1170, None, 'PtCo intermetallic, H2-air', 'Nat. Commun. 2022 (10.1038/s41467-022-34037-7)'),
-        (2016, 'PGM', 841, None, 'PtFeCo/C ternary alloy', 'IJHE 2016 (10.1016/j.ijhydene.2016.04.109)'),
+        (2024, 'PGM', 'O2', 2031, None, 'ZIF-Pt-Co-Ni', 'Nano Energy 2024 (10.1016/j.nanoen.2023.109154)'),
+        (2016, 'PGM', 'O2', 2000, None, 'Au@Pt core-shell, 10k cycles', 'Chemelectrochem 2016 (10.1002/celc.201600046)'),
+        (2017, 'PGM', 'O2', 1365, None, 'Pt-Pd nanodendrites', 'IJHE 2017 (10.1016/j.ijhydene.2017.08.162)'),
+        (2019, 'PGM', 'O2', 1300, None, 'Pt-Pd/C coupled (HT-PEMFC)', 'IJHE 2019 (10.1016/j.ijhydene.2018.07.192)'),
+        (2022, 'PGM', 'air', 1170, None, 'PtCo intermetallic', 'Nat. Commun. 2022 (10.1038/s41467-022-34037-7)'),
+        (2016, 'PGM', 'air', 841, None, 'PtFeCo/C ternary alloy', 'IJHE 2016 (10.1016/j.ijhydene.2016.04.109)'),
     ],
     'AEMFC': [
-        (2016, 'PGM', 700, None, '60-80°C, H2/O2, radiation-grafted AEM', 'EES 2016 Ponce-Gonzalez (10.1039/c6ee01958g)'),
-        (2017, 'PGM', 1000, None, '60-80°C, H2/O2, PtRu, water-balanced', 'JPS 2017 Omasta (10.1016/j.jpowsour.2017.05.006)'),
-        (2016, 'PGM', 300, None, 'Pd-Ni bifunctional HOR', 'JPS 2016 Alesker (10.1016/j.jpowsour.2015.11.026)'),
-        (2008, 'PGM-free', 100, None, 'Completely PGM-free (Lu et al.)', 'PNAS 2008 (10.1073/pnas.0810041106)'),
+        (2016, 'PGM', 'O2', 700, None, '60-80°C, radiation-grafted AEM', 'EES 2016 Ponce-Gonzalez (10.1039/c6ee01958g)'),
+        (2017, 'PGM', 'O2', 1000, None, '60-80°C, PtRu, water-balanced', 'JPS 2017 Omasta (10.1016/j.jpowsour.2017.05.006)'),
+        (2016, 'PGM', 'O2', 300, None, 'Pd-Ni bifunctional HOR', 'JPS 2016 Alesker (10.1016/j.jpowsour.2015.11.026)'),
+        (2008, 'PGM-free', 'O2', 100, None, 'Completely PGM-free', 'PNAS 2008 (10.1073/pnas.0810041106)'),
     ],
     'HT-PEMFC': [
-        (2018, 'PGM', 512, None, '120°C, CNT/ABPBI/Pt@IL, Pt 0.3mg', 'ChemCatChem 2018 Luo et al. (DOI待查)'),
-        (2015, 'PGM', 482, None, '160°C, H2/O2, binderless Pt 0.1mg', 'JPS 2015 Martin et al. (DOI待查)'),
-        (2010, 'PGM', 715, None, '150°C, membrane immobilization', 'IJHE 2010 Sun et al. (DOI待查)'),
-        (2018, 'PGM-free', 185, None, '160°C, H2/O2, BP-FeNC', 'Appl. Catal. B 2018 Hu et al. (DOI待查)'),
+        (2018, 'PGM', 'O2', 512, None, '120°C, CNT/ABPBI/Pt@IL', 'ChemCatChem 2018 Luo (DOI待查)'),
+        (2015, 'PGM', 'O2', 482, None, '160°C, binderless Pt 0.1mg', 'JPS 2015 Martin (DOI待查)'),
+        (2010, 'PGM', 'O2', 715, None, '150°C, membrane immobilization', 'IJHE 2010 Sun (DOI待查)'),
+        (2018, 'PGM-free', 'O2', 185, None, '160°C, BP-FeNC', 'Appl. Catal. B 2018 Hu (DOI待查)'),
+    ],
+    'O-SOFC': [
+        (2024, 'PGM-free', 'air', 2000, None, '650°C, ESB/GDC bilayer', 'JPS 2024 LT-SOFC review (年份待追)'),
+        (2024, 'PGM-free', 'air', 1950, None, '600°C, Fe-Ni anode, LSGM', 'JPS 2024 LT-SOFC review (年份待追)'),
+        (2024, 'PGM-free', 'air', 1257, None, '520°C, ZnO/NiO-SDC', 'JPS 2024 LT-SOFC review (年份待追)'),
+        (2024, 'PGM-free', 'air', 1200, None, '500°C, SCNT cathode', 'JPS 2024 LT-SOFC review (年份待追)'),
+        (2021, 'PGM-free', 'air', 2500, None, '900°C, impregnated electrodes', 'IJHE 2021 SOFC review (年份待追)'),
+        (2021, 'PGM-free', 'air', 1750, None, '800°C, anode pore structure', 'IJHE 2021 SOFC review (年份待追)'),
+    ],
+    'P-SOFC': [
+        (2024, 'PGM-free', 'air', 431, None, '600°C, SNS electrolyte', 'JPS 2024 LT-SOFC review (年份待追)'),
+    ],
+}
+
+# 商業系統效率數據（效率% × 年份，另圖呈現）
+# 格式: {category: [(year, product, efficiency_pct, conditions, source)]}
+COMMERCIAL = {
+    '車用 PEMFC': [
+        (2014, 'Mirai 一代', 64, 'LHV, ANL 實測 <10kW', 'DOE Record 20005'),
+        (2016, 'Honda Clarity', 60, 'LHV, 官方', 'hondanews 2015'),
+    ],
+    '固定式 PEMFC': [
+        (2019, 'Panasonic Ene-Farm', 41, 'LHV, 0.7kW, 改質NG', 'panasonic.biz'),
+    ],
+    '固定式 SOFC': [
+        (2022, 'Bloom Energy Server H2', 52, 'LHV, 300kW, net AC', 'bloomenergy.com datasheet'),
+        (2024, 'Bloom H2 SOFC', 60, 'LHV, 100% H2, BOL', 'bloomenergy.com 2024-08-05'),
+    ],
+    '固定式 MCFC/PAFC': [
+        (2020, 'FCE SureSource 4000', 60, 'LHV, AC net, MCFC', 'globenewswire 2020'),
+        (2023, 'Doosan PureCell M400 H2', 50, 'LHV, PAFC, 440kW', 'doosanfuelcell.com'),
     ],
 }
 
@@ -49,9 +79,18 @@ TECH_COLORS = {
     'COMMERCIAL': '#808080',
 }
 
+# 催化劑 marker 形狀
 CATALYST_MARKERS = {
     'PGM': 'circle',
     'PGM-free': 'square',
+}
+
+# 商業圖顏色
+COMMERCIAL_COLORS = {
+    '車用 PEMFC': '#e6194b',
+    '固定式 PEMFC': '#3cb44b',
+    '固定式 SOFC': '#4363d8',
+    '固定式 MCFC/PAFC': '#f58231',
 }
 
 
@@ -59,6 +98,8 @@ def build_html():
     data_json = json.dumps(DATA, ensure_ascii=False)
     colors_json = json.dumps(TECH_COLORS, ensure_ascii=False)
     markers_json = json.dumps(CATALYST_MARKERS, ensure_ascii=False)
+    commercial_json = json.dumps(COMMERCIAL, ensure_ascii=False)
+    comm_colors_json = json.dumps(COMMERCIAL_COLORS, ensure_ascii=False)
 
     html = f"""<!DOCTYPE html>
 <html lang="zh-Hant">
@@ -87,59 +128,78 @@ th {{ background: #f0f0f0; }}
 <div class="marker-legend">
   <span><svg width="14" height="14"><circle cx="7" cy="7" r="6" fill="#333"/></svg> PGM（貴金屬）</span>
   <span><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" fill="#333"/></svg> PGM-free（非貴金屬）</span>
+  <span><svg width="14" height="14"><circle cx="7" cy="7" r="6" fill="none" stroke="#333" stroke-width="2"/></svg> H₂/O₂ 量測（空心+虛線）</span>
+  <span><svg width="14" height="14"><circle cx="7" cy="7" r="6" fill="#333"/></svg> H₂/air 量測（實心+實線）</span>
 </div>
 
 <div id="chart"></div>
 
+<h2>📋 商業系統效率（車用 / 固定式）</h2>
+<div id="commercial_chart"></div>
+
 <h2>📋 操作條件與來源參考資料</h2>
 <div id="refs"></div>
 
-<p class="note">⚠️ 數據持續擴充中——目前為 review 文獻文本提取（AEMFC/HT-PEMFC），極化曲線讀圖取點進行中。CC BY 4.0（資料/圖）· MIT（程式碼）。</p>
+<p class="note">⚠️ 數據持續擴充中——目前為 review 文獻文本提取 + 官方商業規格；極化曲線讀圖取點進行中。CC BY 4.0（資料/圖）· MIT（程式碼）。</p>
 
 <script>
 const DATA = {data_json};
 const COLORS = {colors_json};
 const MARKERS = {markers_json};
+const COMMERCIAL = {commercial_json};
+const COMM_COLORS = {comm_colors_json};
 
-// 整理 traces：上圖 peak power，下圖 current density@0.65V
+// === 電池紀錄圖（上：峰值功率；下：電流密度@0.65V）===
+// 每技術 × 每催化劑 × 每氣體 = 一條獨立線
 const traces = [];
-let tIdx = 0;
 for (const [tech, pts] of Object.entries(DATA)) {{
-  // peak power (mW/cm² → W/cm²)
-  const pp = pts.filter(p => p[2] !== null);
   for (const cat of ['PGM', 'PGM-free']) {{
-    const sel = pp.filter(p => p[1] === cat).sort((a,b) => a[0]-b[0]);
-    if (sel.length === 0) continue;
-    traces.push({{
-      x: sel.map(p => p[0]), y: sel.map(p => p[2]/1000),
-      mode: 'lines+markers', name: tech + ' (' + cat + ')',
-      line: {{color: COLORS[tech] || '#000', width: 2}},
-      marker: {{symbol: MARKERS[cat], size: 9, color: COLORS[tech] || '#000'}},
-      xaxis: 'x', yaxis: 'y',
-      text: sel.map(p => `${{p[0]}}: ${{p[2]}} mW/cm²<br>${{p[4]}}<br>來源: ${{p[5]}}`),
-      hoverinfo: 'text',
-    }});
-  }}
-  // current density @0.65V
-  const cd = pts.filter(p => p[3] !== null);
-  for (const cat of ['PGM', 'PGM-free']) {{
-    const sel = cd.filter(p => p[1] === cat).sort((a,b) => a[0]-b[0]);
-    if (sel.length === 0) continue;
-    traces.push({{
-      x: sel.map(p => p[0]), y: sel.map(p => p[3]),
-      mode: 'lines+markers', name: tech + ' @0.65V (' + cat + ')',
-      line: {{color: COLORS[tech] || '#000', width: 2, dash: 'dot'}},
-      marker: {{symbol: MARKERS[cat], size: 9, color: COLORS[tech] || '#000'}},
-      xaxis: 'x2', yaxis: 'y2',
-      text: sel.map(p => `${{p[0]}}: ${{p[3]}} mA/cm² @0.65V<br>${{p[4]}}<br>來源: ${{p[5]}}`),
-      hoverinfo: 'text',
-    }});
+    for (const gas of ['air', 'O2']) {{
+      // 峰值功率
+      const selP = pts.filter(p => p[1] === cat && p[2] === gas && p[3] !== null).sort((a,b) => a[0]-b[0]);
+      if (selP.length > 0) {{
+        const hollow = gas === 'O2';
+        traces.push({{
+          x: selP.map(p => p[0]), y: selP.map(p => p[3]/1000),
+          mode: 'lines+markers',
+          name: `${{tech}} (${{cat}}, ${{gas}})`,
+          line: {{color: COLORS[tech] || '#000', width: 2, dash: hollow ? 'dash' : 'solid'}},
+          marker: {{
+            symbol: MARKERS[cat], size: 9,
+            color: hollow ? 'rgba(0,0,0,0)' : (COLORS[tech] || '#000'),
+            line: {{color: COLORS[tech] || '#000', width: 2}},
+          }},
+          xaxis: 'x', yaxis: 'y',
+          text: selP.map(p => `${{p[0]}}: ${{p[3]}} mW/cm² (${{gas}})<br>${{p[5]}}<br>${{p[6]}}`),
+          hoverinfo: 'text',
+        }});
+      }}
+      // 電流密度 @0.65V
+      const selC = pts.filter(p => p[1] === cat && p[2] === gas && p[4] !== null).sort((a,b) => a[0]-b[0]);
+      if (selC.length > 0) {{
+        const hollow = gas === 'O2';
+        traces.push({{
+          x: selC.map(p => p[0]), y: selC.map(p => p[4]),
+          mode: 'lines+markers',
+          name: `${{tech}} @0.65V (${{cat}}, ${{gas}})`,
+          line: {{color: COLORS[tech] || '#000', width: 2, dash: hollow ? 'dashdot' : 'dot'}},
+          marker: {{
+            symbol: MARKERS[cat], size: 9,
+            color: hollow ? 'rgba(0,0,0,0)' : (COLORS[tech] || '#000'),
+            line: {{color: COLORS[tech] || '#000', width: 2}},
+          }},
+          xaxis: 'x2', yaxis: 'y2',
+          text: selC.map(p => `${{p[0]}}: ${{p[4]}} mA/cm² @0.65V (${{gas}})<br>${{p[5]}}<br>${{p[6]}}`),
+          hoverinfo: 'text',
+        }});
+      }}
+    }}
   }}
 }}
 
 const layout = {{
   grid: {{rows: 2, columns: 1, pattern: 'independent'}},
-  title: {{text: 'Fuel Cell Performance Ladder (2016–2026)', font: {{size: 18}}}},
+  title: {{text: 'Fuel Cell Performance Ladder — 電池紀錄 (2016–2026)', font: {{size: 16}}}},
   showlegend: true,
   height: 950,
   xaxis: {{title: 'Year', range: [2015.5, 2026.5], dtick: 1}},
@@ -147,17 +207,40 @@ const layout = {{
   yaxis: {{title: 'Peak Power Density (W/cm²)', rangemode: 'tozero'}},
   yaxis2: {{title: 'Current Density @0.65V (A/cm²)', rangemode: 'tozero'}},
   hovermode: 'closest',
-  legend: {{orientation: 'h', y: -0.1, font: {{size: 10}}}},
-  margin: {{t: 60, b: 80, l: 70, r: 30}},
+  legend: {{orientation: 'h', y: -0.15, font: {{size: 9}}}},
+  margin: {{t: 60, b: 100, l: 70, r: 30}},
 }};
-
 Plotly.newPlot('chart', traces, layout, {{responsive: true}});
 
-// 參考資料表
-let html = '<table><tr><th>技術</th><th>年份</th><th>催化劑</th><th>峰值功率</th><th>操作條件</th><th>來源</th></tr>';
+// === 商業系統效率圖 ===
+const cTraces = [];
+for (const [cat, items] of Object.entries(COMMERCIAL)) {{
+  const sorted = [...items].sort((a,b) => a[0]-b[0]);
+  cTraces.push({{
+    x: sorted.map(p => p[0]), y: sorted.map(p => p[2]),
+    mode: 'lines+markers', name: cat,
+    line: {{color: COMM_COLORS[cat] || '#000', width: 2}},
+    marker: {{size: 9, color: COMM_COLORS[cat] || '#000'}},
+    text: sorted.map(p => `${{p[1]}} (${{p[0]}}): ${{p[2]}}%<br>${{p[3]}}<br>${{p[4]}}`),
+    hoverinfo: 'text',
+  }});
+}}
+const cLayout = {{
+  title: {{text: 'Commercial Systems Efficiency (LHV, %)', font: {{size: 16}}}},
+  xaxis: {{title: 'Year', range: [2013.5, 2026.5], dtick: 1}},
+  yaxis: {{title: 'Efficiency (%)', rangemode: 'tozero'}},
+  showlegend: true, height: 420,
+  hovermode: 'closest',
+  legend: {{orientation: 'h', y: -0.2, font: {{size: 10}}}},
+  margin: {{t: 50, b: 80, l: 60, r: 30}},
+}};
+Plotly.newPlot('commercial_chart', cTraces, cLayout, {{responsive: true}});
+
+// === 參考資料表 ===
+let html = '<table><tr><th>技術</th><th>年份</th><th>催化劑</th><th>氣體</th><th>峰值功率</th><th>操作條件</th><th>來源</th></tr>';
 for (const [tech, pts] of Object.entries(DATA)) {{
   for (const p of pts) {{
-    html += `<tr><td>${{tech}}</td><td>${{p[0]}}</td><td>${{p[1]}}</td><td>${{p[2] ? p[2]+' mW/cm²' : '—'}}</td><td>${{p[4]}}</td><td>${{p[5]}}</td></tr>`;
+    html += `<tr><td>${{tech}}</td><td>${{p[0]}}</td><td>${{p[1]}}</td><td>${{p[2]}}</td><td>${{p[3] ? p[3]+' mW/cm²' : '—'}}</td><td>${{p[5]}}</td><td>${{p[6]}}</td></tr>`;
   }}
 }}
 html += '</table>';

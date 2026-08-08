@@ -32,6 +32,19 @@
 
 ---
 
+## C1. 商業 SOFC — Bloom Energy（2026-08 收集）✅
+
+| 產品/系統 | 電效率%(基準) | CHP% | 功率 | 年份 | 來源 |
+|------|:--:|:--:|:--:|:--:|------|
+| Bloom H₂ SOFC 平台 | **60%**（BOL, 100% H₂）| **90%**（高溫 CHP）| — | 2024 | bloomenergy.com 新聞稿 (2024-08-05) |
+| Bloom Energy Server（H₂）| 52%（LHV, net AC）| — | 300 kW | 2022 | hydrogen-data-sheet.pdf |
+| Bloom Series 10 | — | CHP 5 MWt @>350°C | 10 MW | 2023 | Series10-V12.pdf |
+
+- 原始 PDF 存：`ref/commercial/`（Bloom_H2_DataSheet_2022、Bloom_Series10_2023、Bloom_H2_Blending_TechnicalNote）
+- 未驗證（勿引用）：Doosan PureCell 400、Mitsubishi SOFC-MGT、Sunfire、Aisin Ene-Farm 46.5%、Jülich 70,000h
+
+---
+
 ## R13. PEMFC 膜文獻計量 (2026 JMEP) ✅ 已讀
 
 **文獻**：Kesercioğlu et al. (2026). "Sustainable Membrane Materials in PEM Fuel Cells: A Bibliometric Analysis." *J. Mater. Eng. Perform.*
