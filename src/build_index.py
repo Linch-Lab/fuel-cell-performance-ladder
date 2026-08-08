@@ -18,23 +18,24 @@ HTML_OUT = os.path.join(REPO, 'index.html')
 # 格式: {tech: [(year, catalyst, peak_power_mWcm2, current_0_65V_mAcm2, conditions, source)]}
 DATA = {
     'PEMFC': [
-        (2025, 'PGM', 2031, None, 'ZIF-Pt-Co-Ni, H2/O2', 'IJHE 2025'),
-        (2025, 'PGM', 2000, None, 'Au@Pt core-shell, H2/O2, 10k cycles', 'IJHE 2025'),
-        (2025, 'PGM', 1365, None, 'Pt-Pd nanodendrites', 'IJHE 2025'),
-        (2025, 'PGM', 1300, None, 'Pt-Pd/C coupled', 'IJHE 2025'),
-        (2025, 'PGM', 1170, None, 'PtCo, H2-air', 'IJHE 2025'),
+        (2024, 'PGM', 2031, None, 'ZIF-Pt-Co-Ni, H2/O2', 'Nano Energy 2024 (10.1016/j.nanoen.2023.109154)'),
+        (2016, 'PGM', 2000, None, 'Au@Pt core-shell, H2/O2, 10k cycles', 'Chemelectrochem 2016 (10.1002/celc.201600046)'),
+        (2017, 'PGM', 1365, None, 'Pt-Pd nanodendrites', 'IJHE 2017 (10.1016/j.ijhydene.2017.08.162)'),
+        (2019, 'PGM', 1300, None, 'Pt-Pd/C coupled (HT-PEMFC)', 'IJHE 2019 (10.1016/j.ijhydene.2018.07.192)'),
+        (2022, 'PGM', 1170, None, 'PtCo intermetallic, H2-air', 'Nat. Commun. 2022 (10.1038/s41467-022-34037-7)'),
+        (2016, 'PGM', 841, None, 'PtFeCo/C ternary alloy', 'IJHE 2016 (10.1016/j.ijhydene.2016.04.109)'),
     ],
     'AEMFC': [
-        (2016, 'PGM', 700, None, '60-80°C, H2/O2, Pt/PtRu', 'AEMFC Review 2018 JPS'),
-        (2017, 'PGM', 1000, None, '60-80°C, H2/O2, PtRu', 'AEMFC Review 2018 JPS'),
-        (2017, 'PGM-free', 300, None, '60-80°C, H2/O2, Pd-Ni/CeO2', 'AEMFC Review 2018 JPS'),
-        (2018, 'PGM-free', 100, None, '60-80°C, H2/O2, PGM-free HOR', 'AEMFC Review 2018 JPS'),
+        (2016, 'PGM', 700, None, '60-80°C, H2/O2, radiation-grafted AEM', 'EES 2016 Ponce-Gonzalez (10.1039/c6ee01958g)'),
+        (2017, 'PGM', 1000, None, '60-80°C, H2/O2, PtRu, water-balanced', 'JPS 2017 Omasta (10.1016/j.jpowsour.2017.05.006)'),
+        (2016, 'PGM', 300, None, 'Pd-Ni bifunctional HOR', 'JPS 2016 Alesker (10.1016/j.jpowsour.2015.11.026)'),
+        (2008, 'PGM-free', 100, None, 'Completely PGM-free (Lu et al.)', 'PNAS 2008 (10.1073/pnas.0810041106)'),
     ],
     'HT-PEMFC': [
-        (2016, 'PGM', 512, None, '120°C, CNT/ABPBI/Pt@IL', 'CSR 2021'),
-        (2016, 'PGM', 482, None, '160°C, H2/O2, binderless Pt 0.1mg', 'CSR 2021'),
-        (2016, 'PGM', 320, None, '150°C, Pt/C 0.2mg, MPL-free', 'CSR 2021'),
-        (2018, 'PGM-free', 185, None, '160°C, H2/O2, Fe-N-C', 'CSR 2021'),
+        (2018, 'PGM', 512, None, '120°C, CNT/ABPBI/Pt@IL, Pt 0.3mg', 'ChemCatChem 2018 Luo et al. (DOI待查)'),
+        (2015, 'PGM', 482, None, '160°C, H2/O2, binderless Pt 0.1mg', 'JPS 2015 Martin et al. (DOI待查)'),
+        (2010, 'PGM', 715, None, '150°C, membrane immobilization', 'IJHE 2010 Sun et al. (DOI待查)'),
+        (2018, 'PGM-free', 185, None, '160°C, H2/O2, BP-FeNC', 'Appl. Catal. B 2018 Hu et al. (DOI待查)'),
     ],
 }
 
