@@ -44,8 +44,15 @@ TECH_LABELS = {
 }
 
 
+# 催化劑類型 marker 形狀（嚴格二分：PGM vs PGM-free）
+CATALYST_MARKERS = {
+    'PGM': 'o',          # 貴金屬（含純 Pt 與 Pt 合金）
+    'PGM-free': 's',     # 全非貴金屬
+}
+
+
 def load_csv(metric):
-    """載入 data/fc_*.csv，回傳 {tech: [(year, value), ...]} 同年取最高"""
+    """載入 data/fc_*.csv，回傳 {tech: [(year, cat, value), ...]} 同年同類取最高"""
     fname = 'fc_peak_power.csv' if metric == 'peak_power' else 'fc_current_density.csv'
     path = os.path.join(DATA_DIR, fname)
     if not os.path.exists(path):
@@ -55,12 +62,16 @@ def load_csv(metric):
     with open(path, encoding='utf-8-sig') as fh:
         for r in csv.DictReader(fh):
             tech = r['technology']
+            cat = r.get('catalyst_type', 'PGM')
             year = int(r['year'])
             val = float(r['value'])
-            # 同年取最高
-            if year not in by_tech[tech] or val > by_tech[tech][year]:
-                by_tech[tech][year] = val
-    return {t: sorted(d.items()) for t, d in by_tech.items()}
+            key = (year, cat)
+            # 同年同催化劑類取最高
+            if key not in by_tech[tech] or val > by_tech[tech][key][1]:
+                by_tech[tech][key] = (val, cat)
+    # 轉成 [(year, cat, value), ...] 排序
+    return {t: sorted([(y, c, v) for (y, c), (v, _) in d.items()])
+            for t, d in by_tech.items()}
 
 
 def draw_subplot(ax, data, ylabel, title):
@@ -68,16 +79,25 @@ def draw_subplot(ax, data, ylabel, title):
         if not pts:
             continue
         years = [p[0] for p in pts]
-        vals = [p[1] for p in pts]
+        vals = [p[2] for p in pts]
+        cats = [p[1] for p in pts]
         color = TECH_COLORS.get(tech, '#000000')
         label = TECH_LABELS.get(tech, tech)
-        # 點 + 線（缺年份不插值，直接連線；單點只畫點）
-        ax.plot(years, vals, 'o-', color=color, label=label, markersize=5, linewidth=1.5)
-    ax.set_xlim(2015.5, 2026.5)
-    ax.set_xticks(range(2016, 2027, 2))
-    ax.set_ylabel(ylabel, fontsize=11)
-    ax.set_title(title, fontsize=12)
-    ax.grid(True, alpha=0.3)
+        # 同技術連線（虛線），點用催化劑形狀
+        ax.plot(years, vals, '-', color=color, linewidth=1.2, alpha=0.7)
+        for y, v, c in pts:
+            m = CATALYST_MARKERS.get(c, 'o')
+            ax.plot(y, v, m, color=color, markersize=8,
+                    label=label if (tech, c) not in ax._legend_labels else None)
+            ax._legend_labels.add((tech, c))
+        ax.set_xlim(2015.5, 2026.5)
+        ax.set_xticks(range(2016, 2027, 2))
+        ax.set_ylabel(ylabel, fontsize=11)
+        ax.set_title(title, fontsize=12)
+        ax.grid(True, alpha=0.3)
+        if not hasattr(ax, '_legend_added'):
+            ax.legend(loc='upper left', fontsize=8, framealpha=0.8)
+            ax._legend_added = True
     ax.legend(loc='upper left', fontsize=8, framealpha=0.8)
 
 

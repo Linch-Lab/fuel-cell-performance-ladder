@@ -17,6 +17,13 @@ HTML_OUT = os.path.join(REPO, 'index.html')
 # 內嵌已提取數據點（review 讀取，後續讀圖補點）
 # 格式: {tech: [(year, catalyst, peak_power_mWcm2, current_0_65V_mAcm2, conditions, source)]}
 DATA = {
+    'PEMFC': [
+        (2025, 'PGM', 2031, None, 'ZIF-Pt-Co-Ni, H2/O2', 'IJHE 2025'),
+        (2025, 'PGM', 2000, None, 'Au@Pt core-shell, H2/O2, 10k cycles', 'IJHE 2025'),
+        (2025, 'PGM', 1365, None, 'Pt-Pd nanodendrites', 'IJHE 2025'),
+        (2025, 'PGM', 1300, None, 'Pt-Pd/C coupled', 'IJHE 2025'),
+        (2025, 'PGM', 1170, None, 'PtCo, H2-air', 'IJHE 2025'),
+    ],
     'AEMFC': [
         (2016, 'PGM', 700, None, '60-80°C, H2/O2, Pt/PtRu', 'AEMFC Review 2018 JPS'),
         (2017, 'PGM', 1000, None, '60-80°C, H2/O2, PtRu', 'AEMFC Review 2018 JPS'),

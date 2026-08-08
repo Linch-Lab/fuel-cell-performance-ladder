@@ -6,3 +6,4 @@ venv/
 *.log
 references/*.pdf
 ref/
+mineru_output/
