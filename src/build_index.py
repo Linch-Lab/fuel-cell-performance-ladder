@@ -31,21 +31,21 @@ DATA = {
         (2008, 'PGM-free', 'O2', 100, None, 'Completely PGM-free', 'PNAS 2008 (10.1073/pnas.0810041106)'),
     ],
     'HT-PEMFC': [
-        (2018, 'PGM', 'O2', 512, None, '120°C, CNT/ABPBI/Pt@IL', 'ChemCatChem 2018 Luo (DOI待查)'),
-        (2015, 'PGM', 'O2', 482, None, '160°C, binderless Pt 0.1mg', 'JPS 2015 Martin (DOI待查)'),
-        (2010, 'PGM', 'O2', 715, None, '150°C, membrane immobilization', 'IJHE 2010 Sun (DOI待查)'),
-        (2018, 'PGM-free', 'O2', 185, None, '160°C, BP-FeNC', 'Appl. Catal. B 2018 Hu (DOI待查)'),
+        (2018, 'PGM', 'O2', 512, None, '120°C, CNT/ABPBI/Pt@IL', 'Luo 2018 ChemCatChem (10.1002/cctc.201801256)'),
+        (2015, 'PGM', 'O2', 482, None, '160°C, binderless Pt 0.1mg', 'Martin 2015 JPS 293:51-56 (10.1016/j.jpowsour.2014.08.112)'),
+        (2010, 'PGM', 'O2', 715, None, '150°C, membrane immobilization', 'Sun 2010 IJHE 35:2921-25 (10.1016/j.ijhydene.2009.05.049)'),
+        (2018, 'PGM-free', 'O2', 185, None, '160°C, BP-FeNC', 'Hu 2018 Appl. Catal. B 234:357-64 (10.1016/j.apcatb.2018.03.056)'),
     ],
     'O-SOFC': [
-        (2009, 'PGM-free', 'air', 2000, None, '650°C, ESB/GDC bilayer', 'Ahn 2009 Electrochem. Commun. 11(7):1504-1507 (DOI待查)'),
+        (2009, 'PGM-free', 'air', 2000, None, '650°C, ESB/GDC bilayer', 'Ahn 2009 Electrochem. Commun. (10.1016/j.elecom.2009.05.041)'),
         (2016, 'PGM-free', 'air', 1950, None, '600°C, Fe-Ni anode, LSGM', 'LT-SOFC review 2024 (年份/DOI待追)'),
-        (2011, 'PGM-free', 'air', 1257, None, '520°C, ZnO/NiO-SDC', 'Raza 2011 Electrochem. Commun. 13(9):917-920 (DOI待查)'),
-        (2017, 'PGM-free', 'air', 1200, None, '500°C, SCNT cathode', 'Li 2017 Nat. Commun. 8:13990 (DOI待查)'),
-        (2016, 'PGM-free', 'air', 2500, None, '900°C, impregnated electrodes', 'Kim 2016 Int. J. Energy Res. 40:726-732 (DOI待查)'),
-        (2013, 'PGM-free', 'air', 1750, None, '800°C, anode pore structure', 'Sarikaya 2013 IJHE 38:10081-91 (DOI待查)'),
+        (2011, 'PGM-free', 'air', 1257, None, '520°C, ZnO/NiO-SDC', 'Raza 2011 Electrochem. Commun. (10.1016/j.elecom.2011.05.032)'),
+        (2017, 'PGM-free', 'air', 1200, None, '500°C, SCNT cathode', 'Li 2017 Nat. Commun. (10.1038/ncomms13990)'),
+        (2016, 'PGM-free', 'air', 2500, None, '900°C, impregnated electrodes', 'Kim 2016 Int. J. Energy Res. (10.1002/er.3465)'),
+        (2013, 'PGM-free', 'air', 1750, None, '800°C, anode pore structure', 'Sarikaya 2013 IJHE (10.1016/j.ijhydene.2013.05.160)'),
     ],
     'P-SOFC': [
-        (2024, 'PGM-free', 'air', 431, None, '600°C, SNS electrolyte', 'LT-SOFC review 2024 (年份/DOI待追)'),
+        (2014, 'PGM-free', 'air', 431, None, '600°C, SNS electrolyte', 'Wei 2014 EES (10.1039/c3ee43730b)'),
     ],
 }
 
