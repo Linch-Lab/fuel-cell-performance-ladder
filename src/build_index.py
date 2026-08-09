@@ -17,6 +17,9 @@ HTML_OUT = os.path.join(REPO, 'index.html')
 # 格式: {tech: [(year, catalyst, gas, peak_power_mWcm2, current_0_65V_mAcm2, conditions, source)]}
 DATA = {
     'PEMFC': [
+        (2021, 'PGM', 'O2', 2100, None, 'Pemion hydrocarbon MEA, 7μm, PtCo/C', 'Nguyen 2021 Sustain. Energy Fuels 5:3687 (10.1039/d1se00556a)'),
+        (2021, 'PGM', 'air', 1100, None, 'Pemion, 250kPa, 50%RH', 'Nguyen 2021 Sustain. Energy Fuels 5:3687 (10.1039/d1se00556a)'),
+        (2025, 'PGM', 'O2', 1740, None, 'PtCoV-EPNF, Pt 0.06mg, porous nanofiber', 'Zhao 2025 Adv. Mater. (10.1002/adma.202502457)'),
         (2024, 'PGM', 'O2', 2031, None, 'ZIF-Pt-Co-Ni', 'Nano Energy 2024 (10.1016/j.nanoen.2023.109154)'),
         (2016, 'PGM', 'O2', 2000, None, 'Au@Pt core-shell, 10k cycles', 'Chemelectrochem 2016 (10.1002/celc.201600046)'),
         (2017, 'PGM', 'O2', 1365, None, 'Pt-Pd nanodendrites', 'IJHE 2017 (10.1016/j.ijhydene.2017.08.162)'),
