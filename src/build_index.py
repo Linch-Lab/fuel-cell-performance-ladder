@@ -38,7 +38,6 @@ DATA = {
     ],
     'O-SOFC': [
         (2009, 'PGM-free', 'air', 2000, None, '650°C, ESB/GDC bilayer', 'Ahn 2009 Electrochem. Commun. (10.1016/j.elecom.2009.05.041)'),
-        (2016, 'PGM-free', 'air', 1950, None, '600°C, Fe-Ni anode, LSGM', 'LT-SOFC review 2024 (年份/DOI待追)'),
         (2011, 'PGM-free', 'air', 1257, None, '520°C, ZnO/NiO-SDC', 'Raza 2011 Electrochem. Commun. (10.1016/j.elecom.2011.05.032)'),
         (2017, 'PGM-free', 'air', 1200, None, '500°C, SCNT cathode', 'Li 2017 Nat. Commun. (10.1038/ncomms13990)'),
         (2016, 'PGM-free', 'air', 2500, None, '900°C, impregnated electrodes', 'Kim 2016 Int. J. Energy Res. (10.1002/er.3465)'),
