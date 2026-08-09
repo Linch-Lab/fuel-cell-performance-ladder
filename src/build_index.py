@@ -37,15 +37,15 @@ DATA = {
         (2018, 'PGM-free', 'O2', 185, None, '160°C, BP-FeNC', 'Appl. Catal. B 2018 Hu (DOI待查)'),
     ],
     'O-SOFC': [
-        (2024, 'PGM-free', 'air', 2000, None, '650°C, ESB/GDC bilayer', 'JPS 2024 LT-SOFC review (年份待追)'),
-        (2024, 'PGM-free', 'air', 1950, None, '600°C, Fe-Ni anode, LSGM', 'JPS 2024 LT-SOFC review (年份待追)'),
-        (2024, 'PGM-free', 'air', 1257, None, '520°C, ZnO/NiO-SDC', 'JPS 2024 LT-SOFC review (年份待追)'),
-        (2024, 'PGM-free', 'air', 1200, None, '500°C, SCNT cathode', 'JPS 2024 LT-SOFC review (年份待追)'),
-        (2021, 'PGM-free', 'air', 2500, None, '900°C, impregnated electrodes', 'IJHE 2021 SOFC review (年份待追)'),
-        (2021, 'PGM-free', 'air', 1750, None, '800°C, anode pore structure', 'IJHE 2021 SOFC review (年份待追)'),
+        (2009, 'PGM-free', 'air', 2000, None, '650°C, ESB/GDC bilayer', 'Ahn 2009 Electrochem. Commun. 11(7):1504-1507 (DOI待查)'),
+        (2016, 'PGM-free', 'air', 1950, None, '600°C, Fe-Ni anode, LSGM', 'LT-SOFC review 2024 (年份/DOI待追)'),
+        (2011, 'PGM-free', 'air', 1257, None, '520°C, ZnO/NiO-SDC', 'Raza 2011 Electrochem. Commun. 13(9):917-920 (DOI待查)'),
+        (2017, 'PGM-free', 'air', 1200, None, '500°C, SCNT cathode', 'Li 2017 Nat. Commun. 8:13990 (DOI待查)'),
+        (2016, 'PGM-free', 'air', 2500, None, '900°C, impregnated electrodes', 'Kim 2016 Int. J. Energy Res. 40:726-732 (DOI待查)'),
+        (2013, 'PGM-free', 'air', 1750, None, '800°C, anode pore structure', 'Sarikaya 2013 IJHE 38:10081-91 (DOI待查)'),
     ],
     'P-SOFC': [
-        (2024, 'PGM-free', 'air', 431, None, '600°C, SNS electrolyte', 'JPS 2024 LT-SOFC review (年份待追)'),
+        (2024, 'PGM-free', 'air', 431, None, '600°C, SNS electrolyte', 'LT-SOFC review 2024 (年份/DOI待追)'),
     ],
 }
 
